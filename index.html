@@ -68,9 +68,15 @@
   .globe-wrap{
     display:flex;flex-direction:column;align-items:center;gap:28px;
   }
+  .globe-clip{
+    width:min(420px, 84vw);height:min(420px, 84vw);
+    overflow:hidden;
+    border-radius:50%;
+    clip-path:circle(50% at 50% 50%);
+  }
   .globe-stage{
     position:relative;
-    width:min(420px, 74vw);height:min(420px, 74vw);
+    width:100%;height:100%;
     perspective:1200px;
     touch-action:none;
     cursor:grab;
@@ -167,9 +173,11 @@
 
   <header class="hero">
     <div class="globe-wrap">
-      <div class="globe-stage" id="globe-stage">
-        <div class="globe-core"><img src="avatar.jpg" alt="مهرزاد" loading="eager" decoding="async"></div>
-        <div class="globe-sphere" id="globe-sphere"></div>
+      <div class="globe-clip">
+        <div class="globe-stage" id="globe-stage">
+          <div class="globe-core"><img src="avatar.jpg" alt="مهرزاد" loading="eager" decoding="async"></div>
+          <div class="globe-sphere" id="globe-sphere"></div>
+        </div>
       </div>
     </div>
 
@@ -247,7 +255,7 @@ Object.keys(CATS).forEach(catKey => {
 const stage = document.getElementById("globe-stage");
 const sphere = document.getElementById("globe-sphere");
 
-let R = stage.clientWidth * 0.42;
+let R = stage.clientWidth * 0.34;
 const N = skills.length;
 const nodeEls = skills.map((s, i) => {
   const y = 1 - (i / (N - 1)) * 2;
@@ -273,8 +281,10 @@ const nodeEls = skills.map((s, i) => {
 
   node.appendChild(face);
   sphere.appendChild(node);
-  return node;
+  return {node, face};
 });
+
+nodeEls.forEach(n => { n.halfWidth = n.face.offsetWidth / 2; });
 
 let rotX = -15, rotY = 0;
 let velX = 0, velY = 0.35;
@@ -287,7 +297,8 @@ function render(){
   const cosX = Math.cos(rx), sinX = Math.sin(rx);
   const cosY = Math.cos(ry), sinY = Math.sin(ry);
 
-  nodeEls.forEach(node => {
+  nodeEls.forEach(entry => {
+    const node = entry.node;
     let x = parseFloat(node.dataset.x) * R;
     let y = parseFloat(node.dataset.y) * R;
     let z = parseFloat(node.dataset.z) * R;
@@ -298,9 +309,28 @@ function render(){
     let z2 = y * sinX + z1 * cosX;
 
     const scale = 0.55 + ((z2 + R) / (2 * R)) * 0.7;
+
     node.style.transform = `translate3d(${x1}px, ${y2}px, ${z2}px) scale(${scale})`;
     node.style.zIndex = Math.round(z2);
     node.style.opacity = 0.35 + ((z2 + R) / (2 * R)) * 0.65;
+  });
+
+  const clipRect = stage.getBoundingClientRect();
+  const cx = clipRect.left + clipRect.width / 2;
+  const cy = clipRect.top + clipRect.height / 2;
+  const safeR = clipRect.width / 2 - 6;
+
+  nodeEls.forEach(entry => {
+    const r = entry.face.getBoundingClientRect();
+    const faceCx = r.left + r.width / 2;
+    const faceCy = r.top + r.height / 2;
+    const faceHalfDiag = Math.sqrt(r.width * r.width + r.height * r.height) / 2;
+    const distFromCenter = Math.hypot(faceCx - cx, faceCy - cy) + faceHalfDiag;
+    const overflowAmt = distFromCenter - safeR;
+    const edgeFade = overflowAmt > 30 ? 0 : overflowAmt > 0 ? 1 - overflowAmt / 30 : 1;
+    const baseOpacity = parseFloat(entry.node.style.opacity);
+    entry.node.style.opacity = baseOpacity * edgeFade;
+    entry.node.style.pointerEvents = edgeFade > 0.5 ? "auto" : "none";
   });
 }
 
@@ -334,7 +364,7 @@ function pointerUp(){
 let resizeTimer;
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => { R = stage.clientWidth * 0.42; }, 100);
+  resizeTimer = setTimeout(() => { R = stage.clientWidth * 0.34; }, 100);
 });
 
 stage.addEventListener("mousedown", e => pointerDown(e.clientX, e.clientY));
