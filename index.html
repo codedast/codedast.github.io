@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mehrzad | Security & AI Engineer</title>
+<style>
+  :root{
+    --bg:#0b0f14;
+    --bg-alt:#11161d;
+    --card:#161c25;
+    --border:#232b36;
+    --text:#e6ebf1;
+    --muted:#8b98a9;
+    --accent:#00e0a4;
+    --accent2:#4f8cff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{overflow-x:hidden;max-width:100%}
+  body{
+    background:radial-gradient(circle at 20% -10%, #10251f 0%, var(--bg) 45%);
+    color:var(--text);
+    font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;
+    line-height:1.8;
+    min-height:100vh;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:48px 20px 80px}
+  @media(max-width:640px){
+    .wrap{padding:28px 14px 56px}
+  }
+
+  /* Hero */
+  header.hero{
+    display:flex;flex-direction:column;align-items:center;text-align:center;
+    padding:40px 20px 60px;
+    gap:14px;
+  }
+  .role{color:var(--accent);font-weight:600;font-size:1.05rem}
+  .bio{color:var(--muted);max-width:560px;font-size:.98rem}
+
+  .badges{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+  .badge{
+    background:var(--card);border:1px solid var(--border);
+    color:var(--muted);padding:4px 12px;border-radius:20px;font-size:.8rem;
+  }
+
+  /* Social row */
+  .social{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+  .social a{
+    display:flex;align-items:center;gap:8px;
+    background:var(--card);border:1px solid var(--border);
+    color:var(--text);text-decoration:none;
+    padding:9px 16px;border-radius:10px;font-size:.9rem;
+    transition:.2s border-color, .2s transform;
+  }
+  .social a:hover{border-color:var(--accent);transform:translateY(-2px)}
+
+  /* Sections */
+  section{margin-top:56px}
+  .section-title{
+    font-size:1.3rem;margin-bottom:20px;display:flex;align-items:center;gap:10px;
+  }
+  .section-title::before{
+    content:"";width:6px;height:22px;background:var(--accent);border-radius:3px;
+  }
+
+  /* Skills 3D globe */
+  .globe-wrap{
+    display:flex;flex-direction:column;align-items:center;gap:28px;
+  }
+  .globe-stage{
+    position:relative;
+    width:min(420px, 74vw);height:min(420px, 74vw);
+    perspective:1200px;
+    touch-action:none;
+    cursor:grab;
+  }
+  .globe-stage.dragging{cursor:grabbing}
+  .globe-core{
+    position:absolute;left:50%;top:50%;
+    width:36%;height:36%;margin-left:-18%;margin-top:-18%;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #15332b, var(--bg) 75%);
+    border:1px solid var(--border);
+    box-shadow:0 0 60px rgba(0,224,164,.15), inset 0 0 30px rgba(0,224,164,.08);
+    overflow:hidden;
+  }
+  .globe-core img{width:100%;height:100%;object-fit:cover}
+  .globe-sphere{
+    position:absolute;inset:0;
+    transform-style:preserve-3d;
+  }
+  .globe-node{
+    position:absolute;left:50%;top:50%;
+    width:10px;height:10px;margin:-5px 0 0 -5px;
+    transform-style:preserve-3d;
+  }
+  .globe-face{
+    display:inline-block;
+    background:none;border:none;
+    color:var(--muted);
+    padding:4px 6px;
+    font-size:.74rem;font-weight:600;white-space:nowrap;
+    cursor:pointer;user-select:none;
+    transform:translate(-50%,-50%);
+    transition:.15s color,.15s transform,.15s text-shadow;
+  }
+  .globe-face:hover, .globe-face.active{
+    color:var(--accent);
+    text-shadow:0 0 12px rgba(0,224,164,.6);
+    transform:translate(-50%,-50%) scale(1.15);
+  }
+  @media(max-width:480px){
+    .globe-face{font-size:.56rem;padding:2px 4px}
+  }
+
+  /* Projects */
+  #projects-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;
+  }
+  .project-card{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:18px;text-decoration:none;color:var(--text);
+    display:flex;flex-direction:column;gap:8px;
+    transition:.2s border-color, .2s transform;
+  }
+  .project-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+  .project-card h4{font-size:1rem;color:var(--accent)}
+  .project-card p{color:var(--muted);font-size:.85rem;flex:1}
+  .project-meta{display:flex;gap:14px;font-size:.78rem;color:var(--muted)}
+  .status-msg{color:var(--muted);font-size:.9rem}
+
+  footer{
+    margin-top:70px;text-align:center;color:var(--muted);font-size:.85rem;
+    border-top:1px solid var(--border);padding-top:24px;
+  }
+  a.github-btn{
+    display:inline-flex;align-items:center;gap:8px;margin-top:10px;
+    background:var(--accent);color:#06110d;font-weight:700;
+    padding:10px 22px;border-radius:10px;text-decoration:none;font-size:.9rem;
+  }
+
+  /* Telegram channel card */
+  .telegram-card{
+    display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:24px;
+  }
+  .telegram-card .tg-icon{
+    width:56px;height:56px;border-radius:50%;flex:none;
+    background:linear-gradient(135deg,#2AABEE,#229ED9);
+    display:flex;align-items:center;justify-content:center;font-size:1.6rem;
+  }
+  .telegram-card .tg-info{flex:1;min-width:180px}
+  .telegram-card .tg-info h4{font-size:1rem;color:var(--text)}
+  .telegram-card .tg-info p{color:var(--muted);font-size:.85rem}
+  .telegram-card a.tg-join{
+    display:inline-flex;align-items:center;gap:8px;
+    background:#229ED9;color:#fff;font-weight:700;
+    padding:10px 20px;border-radius:10px;text-decoration:none;font-size:.9rem;
+    white-space:nowrap;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="globe-wrap">
+      <div class="globe-stage" id="globe-stage">
+        <div class="globe-core"><img src="Gemini_Generated_Image_88gdk388gdk388gd.png" alt="مهرزاد"></div>
+        <div class="globe-sphere" id="globe-sphere"></div>
+      </div>
+    </div>
+
+    <div class="role">سیستم ادمین لینوکس · هکر خوشحال 🐧🔐</div>
+    <p class="bio">علاقه‌مند به امنیت سایبری و هوش مصنوعی — از پن‌تست و تحلیل بدافزار گرفته تا ساخت مدل‌های یادگیری ماشین و راه‌اندازی سرورهای VPN.</p>
+
+    <div class="badges">
+      <span class="badge">Linux Admin</span>
+      <span class="badge">VPN Server</span>
+      <span class="badge">Ethical Hacker</span>
+      <span class="badge">AI Enthusiast</span>
+    </div>
+
+    <div class="social">
+      <a href="https://github.com/codedast" target="_blank" rel="noopener">🐙 GitHub</a>
+      <a href="https://instagram.com/mehrzero" target="_blank" rel="noopener">📸 Instagram</a>
+      <a href="https://t.me/mehrzero" target="_blank" rel="noopener">👤 تلگرام شخصی</a>
+      <a href="https://t.me/gozartahrim" target="_blank" rel="noopener">📢 کانال تلگرام</a>
+      <a href="https://t.me/gozartahrimbot" target="_blank" rel="noopener">🤖 ربات تلگرام</a>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-title">پروژه‌های گیت‌هاب</div>
+    <p class="status-msg" id="projects-status">در حال بارگذاری پروژه‌ها از GitHub...</p>
+    <div id="projects-grid"></div>
+  </section>
+
+  <section>
+    <div class="section-title">کانال تلگرام</div>
+    <div class="telegram-card">
+      <div class="tg-icon">📢</div>
+      <div class="tg-info">
+        <h4>گذر تحریم</h4>
+        <p>آخرین اخبار و آموزش‌های عبور از تحریم و امنیت شبکه</p>
+      </div>
+      <a class="tg-join" href="https://t.me/gozartahrim" target="_blank" rel="noopener">عضویت در کانال ↗</a>
+    </div>
+  </section>
+
+  <footer>
+    <div>ساخته‌شده با ❤️ توسط مهرزاد</div>
+    <a class="github-btn" href="https://github.com/codedast" target="_blank" rel="noopener">مشاهده گیت‌هاب →</a>
+  </footer>
+
+</div>
+
+<script>
+const CATS = {
+  security: {
+    icon: "🛡️", name: "امنیت",
+    items: ["Network Security Engineer","Penetration Tester","Cloud Security Engineer","SOC Analyst","Malware Analyst","Reverse Engineer","DevSecOps Engineer","Systems Security Engineer","Security Architect","AI Security Engineer"]
+  },
+  ai: {
+    icon: "🤖", name: "هوش مصنوعی",
+    items: ["AI Engineer","Machine Learning Engineer","Deep Learning Engineer","Data Scientist","Data Engineer","NLP Engineer","Robotics Engineer","Big Data Engineer","Prompt Engineer"]
+  },
+  sysadmin: {
+    icon: "🖥️", name: "سیستم ادمین",
+    items: ["System Administrator","User Management","Server Management","Windows Server Administration","Linux Administration","Cybersecurity","Firewall Management","Backup & Recovery","Storage Management","Documentation","Virtualization","IT Support"]
+  }
+};
+
+const CAT_META = {
+  security: {icon:"🛡️", name:"امنیت", color:"#00e0a4"},
+  ai: {icon:"🤖", name:"هوش مصنوعی", color:"#4f8cff"},
+  sysadmin: {icon:"🖥️", name:"سیستم ادمین", color:"#ffb454"}
+};
+
+const skills = [];
+Object.keys(CATS).forEach(catKey => {
+  CATS[catKey].items.forEach(item => skills.push({name:item, cat:catKey}));
+});
+
+const stage = document.getElementById("globe-stage");
+const sphere = document.getElementById("globe-sphere");
+
+let R = stage.clientWidth * 0.42;
+const N = skills.length;
+const nodeEls = skills.map((s, i) => {
+  const y = 1 - (i / (N - 1)) * 2;
+  const radiusAtY = Math.sqrt(1 - y * y);
+  const theta = Math.PI * (3 - Math.sqrt(5)) * i;
+  const x = Math.cos(theta) * radiusAtY;
+  const z = Math.sin(theta) * radiusAtY;
+
+  const node = document.createElement("div");
+  node.className = "globe-node";
+  node.dataset.x = x; node.dataset.y = y; node.dataset.z = z;
+
+  const face = document.createElement("div");
+  face.className = "globe-face";
+  const meta = CAT_META[s.cat];
+  face.textContent = s.name;
+  face.style.color = meta.color;
+  face.addEventListener("click", (e) => {
+    e.stopPropagation();
+    document.querySelectorAll(".globe-face.active").forEach(f => f.classList.remove("active"));
+    face.classList.add("active");
+  });
+
+  node.appendChild(face);
+  sphere.appendChild(node);
+  return node;
+});
+
+let rotX = -15, rotY = 0;
+let velX = 0, velY = 0.35;
+let dragging = false;
+let lastX = 0, lastY = 0;
+
+function render(){
+  const rx = rotX * Math.PI / 180;
+  const ry = rotY * Math.PI / 180;
+  const cosX = Math.cos(rx), sinX = Math.sin(rx);
+  const cosY = Math.cos(ry), sinY = Math.sin(ry);
+
+  nodeEls.forEach(node => {
+    let x = parseFloat(node.dataset.x) * R;
+    let y = parseFloat(node.dataset.y) * R;
+    let z = parseFloat(node.dataset.z) * R;
+
+    let x1 = x * cosY + z * sinY;
+    let z1 = -x * sinY + z * cosY;
+    let y2 = y * cosX - z1 * sinX;
+    let z2 = y * sinX + z1 * cosX;
+
+    const scale = 0.55 + ((z2 + R) / (2 * R)) * 0.7;
+    node.style.transform = `translate3d(${x1}px, ${y2}px, ${z2}px) scale(${scale})`;
+    node.style.zIndex = Math.round(z2);
+    node.style.opacity = 0.35 + ((z2 + R) / (2 * R)) * 0.65;
+  });
+}
+
+function loop(){
+  if (!dragging){
+    rotY += velY;
+  }
+  render();
+  requestAnimationFrame(loop);
+}
+
+function pointerDown(x, y){
+  dragging = true;
+  lastX = x; lastY = y;
+  stage.classList.add("dragging");
+}
+function pointerMove(x, y){
+  if (!dragging) return;
+  const dx = x - lastX;
+  const dy = y - lastY;
+  rotY += dx * 0.4;
+  rotX -= dy * 0.4;
+  rotX = Math.max(-85, Math.min(85, rotX));
+  lastX = x; lastY = y;
+}
+function pointerUp(){
+  dragging = false;
+  stage.classList.remove("dragging");
+}
+
+let resizeTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => { R = stage.clientWidth * 0.42; }, 100);
+});
+
+stage.addEventListener("mousedown", e => pointerDown(e.clientX, e.clientY));
+window.addEventListener("mousemove", e => pointerMove(e.clientX, e.clientY));
+window.addEventListener("mouseup", pointerUp);
+
+stage.addEventListener("touchstart", e => {
+  const t = e.touches[0];
+  pointerDown(t.clientX, t.clientY);
+}, {passive:true});
+stage.addEventListener("touchmove", e => {
+  const t = e.touches[0];
+  pointerMove(t.clientX, t.clientY);
+}, {passive:true});
+stage.addEventListener("touchend", pointerUp);
+
+loop();
+
+const GH_USER = "codedast";
+const grid = document.getElementById("projects-grid");
+const status = document.getElementById("projects-status");
+
+fetch(`https://api.github.com/users/${GH_USER}/repos?sort=updated&per_page=12`)
+  .then(r => {
+    if (!r.ok) throw new Error("GitHub API error " + r.status);
+    return r.json();
+  })
+  .then(repos => {
+    if (!Array.isArray(repos) || repos.length === 0) {
+      status.textContent = "هنوز پروژه‌ای پیدا نشد.";
+      return;
+    }
+    status.style.display = "none";
+    repos.forEach(repo => {
+      const card = document.createElement("a");
+      card.className = "project-card";
+      card.href = repo.html_url;
+      card.target = "_blank";
+      card.rel = "noopener";
+      card.innerHTML = `
+        <h4>${repo.name}</h4>
+        <p>${repo.description ? repo.description : "بدون توضیحات"}</p>
+        <div class="project-meta">
+          <span>⭐ ${repo.stargazers_count}</span>
+          <span>${repo.language ? repo.language : "—"}</span>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  })
+  .catch(err => {
+    status.textContent = "بارگذاری پروژه‌ها از گیت‌هاب ممکن نشد. مستقیم به پروفایل سر بزن ↓";
+    console.error(err);
+  });
+</script>
+
+</body>
+</html>
