@@ -6,23 +6,34 @@
 <title>Mehrzad | Security & AI Engineer</title>
 <style>
   :root{
-    --bg:#0b0f14;
-    --bg-alt:#11161d;
-    --card:#161c25;
-    --border:#232b36;
-    --text:#e6ebf1;
-    --muted:#8b98a9;
-    --accent:#00e0a4;
-    --accent2:#4f8cff;
+    --bg:#08060f;
+    --bg-alt:#120c22;
+    --card:#150f28;
+    --border:#3a1f5c;
+    --text:#eae6ff;
+    --muted:#9a8fc2;
+    --accent:#00f0ff;
+    --accent2:#ff2ec4;
+    --accent3:#b026ff;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{overflow-x:hidden;max-width:100%}
   body{
-    background:radial-gradient(circle at 20% -10%, #10251f 0%, var(--bg) 45%);
+    background:
+      repeating-linear-gradient(180deg, rgba(255,255,255,.025) 0px, rgba(255,255,255,.025) 1px, transparent 1px, transparent 3px),
+      radial-gradient(circle at 15% -10%, #2a0f4a 0%, transparent 45%),
+      radial-gradient(circle at 90% 10%, #0f2a4a 0%, transparent 40%),
+      var(--bg);
     color:var(--text);
     font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;
     line-height:1.8;
     min-height:100vh;
+  }
+  ::selection{background:var(--accent2);color:#08060f}
+  a{font-family:inherit}
+  .section-title, h1, h2, h3, h4, .role, .p-name, .badge, .social a, .globe-face,
+  .project-card h4, .tg-info h4, a.github-btn, a.tg-join{
+    font-family:'Consolas','SFMono-Regular','Courier New',monospace;
   }
   .wrap{max-width:960px;margin:0 auto;padding:48px 20px 80px}
   @media(max-width:640px){
@@ -35,13 +46,18 @@
     padding:40px 20px 60px;
     gap:14px;
   }
-  .role{color:var(--accent);font-weight:600;font-size:1.05rem}
+  .role{
+    color:var(--accent);font-weight:600;font-size:1.05rem;
+    text-shadow:0 0 8px rgba(0,240,255,.8), 0 0 22px rgba(0,240,255,.35);
+    letter-spacing:.5px;
+  }
   .bio{color:var(--muted);max-width:560px;font-size:.98rem}
 
   .badges{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:6px}
   .badge{
-    background:var(--card);border:1px solid var(--border);
-    color:var(--muted);padding:4px 12px;border-radius:20px;font-size:.8rem;
+    background:var(--card);border:1px solid var(--accent3);
+    color:var(--accent3);padding:4px 12px;border-radius:4px;font-size:.78rem;
+    box-shadow:0 0 10px rgba(176,38,255,.25), inset 0 0 10px rgba(176,38,255,.08);
   }
 
   /* Social row */
@@ -50,18 +66,25 @@
     display:flex;align-items:center;gap:8px;
     background:var(--card);border:1px solid var(--border);
     color:var(--text);text-decoration:none;
-    padding:9px 16px;border-radius:10px;font-size:.9rem;
-    transition:.2s border-color, .2s transform;
+    padding:9px 16px;border-radius:4px;font-size:.85rem;
+    transition:.2s border-color, .2s transform, .2s box-shadow, .2s color;
   }
-  .social a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .social a:hover{
+    border-color:var(--accent2);color:var(--accent2);transform:translateY(-2px);
+    box-shadow:0 0 16px rgba(255,46,196,.4);
+  }
 
   /* Sections */
   section{margin-top:56px}
   .section-title{
-    font-size:1.3rem;margin-bottom:20px;display:flex;align-items:center;gap:10px;
+    font-size:1.15rem;margin-bottom:20px;display:flex;align-items:center;gap:10px;
+    color:var(--accent);text-shadow:0 0 10px rgba(0,240,255,.6);
+    text-transform:uppercase;letter-spacing:1px;
   }
   .section-title::before{
-    content:"";width:6px;height:22px;background:var(--accent);border-radius:3px;
+    content:"//";color:var(--accent2);
+    text-shadow:0 0 10px rgba(255,46,196,.8);
+    background:none;width:auto;height:auto;
   }
 
   /* Skills 3D globe */
@@ -86,9 +109,9 @@
     position:absolute;left:50%;top:50%;
     width:36%;height:36%;margin-left:-18%;margin-top:-18%;
     border-radius:50%;
-    background:radial-gradient(circle at 35% 30%, #15332b, var(--bg) 75%);
-    border:1px solid var(--border);
-    box-shadow:0 0 60px rgba(0,224,164,.15), inset 0 0 30px rgba(0,224,164,.08);
+    background:radial-gradient(circle at 35% 30%, #1e1440, var(--bg) 75%);
+    border:1px solid var(--accent);
+    box-shadow:0 0 40px rgba(0,240,255,.35), 0 0 80px rgba(255,46,196,.15), inset 0 0 30px rgba(0,240,255,.1);
     overflow:hidden;
   }
   .globe-core img{width:100%;height:100%;object-fit:cover}
@@ -112,8 +135,8 @@
     transition:.15s color,.15s transform,.15s text-shadow;
   }
   .globe-face:hover, .globe-face.active{
-    color:var(--accent);
-    text-shadow:0 0 12px rgba(0,224,164,.6);
+    color:var(--accent) !important;
+    text-shadow:0 0 12px rgba(0,240,255,.9), 0 0 24px rgba(0,240,255,.5);
     transform:translate(-50%,-50%) scale(1.15);
   }
   @media(max-width:480px){
@@ -125,13 +148,23 @@
     display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;
   }
   .project-card{
-    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    background:var(--card);border:1px solid var(--border);border-radius:4px;
     padding:18px;text-decoration:none;color:var(--text);
     display:flex;flex-direction:column;gap:8px;
-    transition:.2s border-color, .2s transform;
+    transition:.2s border-color, .2s transform, .2s box-shadow;
+    position:relative;
   }
-  .project-card:hover{border-color:var(--accent);transform:translateY(-3px)}
-  .project-card h4{font-size:1rem;color:var(--accent)}
+  .project-card::before{
+    content:"";position:absolute;top:0;right:0;left:0;height:2px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));
+    opacity:0;transition:.2s opacity;
+  }
+  .project-card:hover{
+    border-color:var(--accent);transform:translateY(-3px);
+    box-shadow:0 0 24px rgba(0,240,255,.2);
+  }
+  .project-card:hover::before{opacity:1}
+  .project-card h4{font-size:1rem;color:var(--accent);text-shadow:0 0 8px rgba(0,240,255,.5)}
   .project-card p{color:var(--muted);font-size:.85rem;flex:1}
   .project-meta{display:flex;gap:14px;font-size:.78rem;color:var(--muted)}
   .status-msg{color:var(--muted);font-size:.9rem}
@@ -142,19 +175,23 @@
   }
   a.github-btn{
     display:inline-flex;align-items:center;gap:8px;margin-top:10px;
-    background:var(--accent);color:#06110d;font-weight:700;
-    padding:10px 22px;border-radius:10px;text-decoration:none;font-size:.9rem;
+    background:transparent;color:var(--accent);font-weight:700;border:1px solid var(--accent);
+    padding:10px 22px;border-radius:4px;text-decoration:none;font-size:.9rem;
+    box-shadow:0 0 14px rgba(0,240,255,.25);
+    transition:.2s box-shadow, .2s background;
   }
+  a.github-btn:hover{background:rgba(0,240,255,.08);box-shadow:0 0 24px rgba(0,240,255,.5)}
 
   /* Telegram channel card */
   .telegram-card{
     display:flex;align-items:center;gap:18px;flex-wrap:wrap;
-    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    background:var(--card);border:1px solid var(--border);border-radius:4px;
     padding:24px;
   }
   .telegram-card .tg-icon{
     width:56px;height:56px;border-radius:50%;flex:none;
-    background:linear-gradient(135deg,#2AABEE,#229ED9);
+    background:linear-gradient(135deg,var(--accent),var(--accent3));
+    box-shadow:0 0 20px rgba(0,240,255,.4);
     display:flex;align-items:center;justify-content:center;font-size:1.6rem;
   }
   .telegram-card .tg-info{flex:1;min-width:180px}
@@ -162,10 +199,12 @@
   .telegram-card .tg-info p{color:var(--muted);font-size:.85rem}
   .telegram-card a.tg-join{
     display:inline-flex;align-items:center;gap:8px;
-    background:#229ED9;color:#fff;font-weight:700;
-    padding:10px 20px;border-radius:10px;text-decoration:none;font-size:.9rem;
-    white-space:nowrap;
+    background:var(--accent2);color:#08060f;font-weight:700;
+    padding:10px 20px;border-radius:4px;text-decoration:none;font-size:.9rem;
+    white-space:nowrap;box-shadow:0 0 16px rgba(255,46,196,.45);
+    transition:.2s box-shadow;
   }
+  .telegram-card a.tg-join:hover{box-shadow:0 0 28px rgba(255,46,196,.7)}
 </style>
 </head>
 <body>
@@ -242,9 +281,9 @@ const CATS = {
 };
 
 const CAT_META = {
-  security: {icon:"🛡️", name:"امنیت", color:"#00e0a4"},
-  ai: {icon:"🤖", name:"هوش مصنوعی", color:"#4f8cff"},
-  sysadmin: {icon:"🖥️", name:"سیستم ادمین", color:"#ffb454"}
+  security: {icon:"🛡️", name:"امنیت", color:"#00f0ff"},
+  ai: {icon:"🤖", name:"هوش مصنوعی", color:"#ff2ec4"},
+  sysadmin: {icon:"🖥️", name:"سیستم ادمین", color:"#b026ff"}
 };
 
 const skills = [];
@@ -273,6 +312,7 @@ const nodeEls = skills.map((s, i) => {
   const meta = CAT_META[s.cat];
   face.textContent = s.name;
   face.style.color = meta.color;
+  face.style.textShadow = `0 0 6px ${meta.color}99`;
   face.addEventListener("click", (e) => {
     e.stopPropagation();
     document.querySelectorAll(".globe-face.active").forEach(f => f.classList.remove("active"));
